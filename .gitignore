@@ -1,0 +1,41 @@
+# User data
+.DS_Store
+
+# Temporary files
+*~
+*.swp
+*.asv
+
+# Data
+*data
+
+*.jpg
+*.bmp
+*.pgm
+*.gif
+*.fig
+*.mov
+*.png
+
+*.mat
+*.zip
+*.db
+*.tar.gz
+
+# videos
+*.mp4
+*.txt
+*.key
+
+# Compiled files
+*.o
+*.mex*
+*.dSYM
+*.user
+
+# Common data/binary directories
+imgs
+video
+nframes
+outputs
+poses
