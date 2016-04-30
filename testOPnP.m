@@ -17,12 +17,6 @@ Iw = 960;
 focal_length = 3067.45 / 4;
 in_mat = [focal_length,0,Iw/2+0.5,0;0,focal_length,Ih/2+0.5,0;0,0,1,0;0,0,0,1];
 
-% nm_mat
-Tw = 1600;
-Th = 1600;
-nm_mat = eye(3);
-nm_mat(1:2, :) = 0.5 * (3300/12350) * [1/Tw, 0, -1/(2*Tw) - 0.5; 0, -1/Th, 1/(2*Th) + 0.5];
-
 for ci = 1:7
   if ci < 5
     si = 1:5;

@@ -1,9 +1,7 @@
 clear all; close all; clc;
-addpath('function');
-addpath(genpath('6_algorithms'));
 
 % compile
-compile = 0;
+compile = 1;
 
 % conditions
 c = ['tr'; 'zo'; 'or'; 'ir'; 'fl'; 'ml'; 'fm'];
@@ -20,24 +18,20 @@ Iw = 960;
 focal_length = 3067.45 / 4;
 in_mat = [focal_length,0,Iw/2+0.5,0;0,focal_length,Ih/2+0.5,0;0,0,1,0;0,0,0,1];
 
-% nm_mat
-Tw = 400;
-Th = 400;
-nm_mat = eye(3);
-nm_mat(1:2, :) = 0.5 * (3300/12350) * [1/Tw, 0, -1/(2*Tw) - 0.5; 0, -1/Th, 1/(2*Th) + 0.5];
-
 if compile
-  compile_matcher;
+  cd '6_algorithms/APEmatlab';
+  CompileMex;
+  cd '../..';
 end
 
-for ci = 1:7
+for ci = 1:6 % fm latter
   if ci < 5
     si = 1:5;
   else
     si = 1;
   end
   for sii = si
-    for mi = 1:6
+    for mi = 2:6
       str = [];
       if ci < 5
         str = [m(mi, :) '_' c(ci, :) '_' int2str(s(sii))];
@@ -45,19 +39,18 @@ for ci = 1:7
         str = [m(mi, :) '_' c(ci, :)];
       end
       fprintf([str '\n']);
-      markerkeyFileName = ['5_markers/' m(mi, :) '.key'];
+      marker = imresize(im2double(imread(['5_markers/' m(mi, :) '.png'])), 0.25);
       video_obj = VideoReader(['1_videos/' str '.mp4']);
       idx = importdata(['3_index/' str '.txt']);
+      txt = fopen(['7_result/APEmatlab/' str '.txt'], 'w');
       for i = idx
-        imwrite(rgb2gray(im2double(read(video_obj, i))), '6_algorithms/ASIFT_RANSAC/tmp.png');
-        %img = rgb2gray(im2double(read(video_obj, i)));
-        warning('off', 'all');
-        cd '6_algorithms/ASIFT_RANSAC';
-        %[P, Q, fail] = ASIFT_RANSAC(markerkeyFileName, img, in_mat, nm_mat);
-        [P, Q, fail] = ASIFT_RANSAC(markerkeyFileName, 'tmp.png', in_mat, nm_mat);
+        img = im2double(read(video_obj, i));
+        cd '6_algorithms/APEmatlab';
+        ex_mat = TestImage_APE(marker, img, in_mat, 0.25 * (3300/12350), 0.2, 0.8, 0.20, 1, 0, 1);
         cd '../..';
-        writeCorres([P; Q], str, i);
+        fprintf(txt,'%f %f %f %f %f %f %f %f %f %f %f %f\n', ex_mat(:).');
       end
+      fclose(txt);
     end
   end
 end
