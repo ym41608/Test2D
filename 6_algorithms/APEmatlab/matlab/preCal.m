@@ -1,4 +1,4 @@
-function [marker, img, bounds, steps, dim] = preCal(in_mat, marker, img, minDim, minTz, maxTz, delta)
+function [marker, img, bounds, steps, dim] = preCal(in_mat, marker, img, minDim, minTz, maxTz, delta, verbose)
   
   % dimensions of images
 	[hm, wm, ~] = size(marker);
@@ -38,8 +38,10 @@ function [marker, img, bounds, steps, dim] = preCal(in_mat, marker, img, minDim,
   
 	% smooth images
 	blur_sigma = calSigmaValue(rgb2gray(marker), Sxf, Syf, dim, minTz*maxTz);
-	fprintf('blur sigma : %d\n', blur_sigma);
-	blur_size = 4 * blur_sigma + 1;
+	if (verbose)
+    fprintf('blur sigma : %d\n', blur_sigma);
+	end
+  blur_size = 4 * blur_sigma + 1;
 	params.blur_kernel  = fspecial('gaussian', blur_size, blur_sigma);
 	marker = imfilter(marker,params.blur_kernel,'symmetric');
 	img = imfilter(img,params.blur_kernel,'symmetric');

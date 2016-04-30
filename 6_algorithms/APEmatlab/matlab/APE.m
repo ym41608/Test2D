@@ -33,11 +33,15 @@ function [bestConfig,ex_mat,delta,sampledError] = APE(marker,img,in_mat,minDim,.
 	
 	% preCalculation
   t1 = tic;
-	[marker, img, bounds, steps, dim] = preCal(in_mat, marker, img, minDim, minTz, maxTz, delta);
-	fprintf('pre-time: %f', toc(t1));
+	[marker, img, bounds, steps, dim] = preCal(in_mat, marker, img, minDim, minTz, maxTz, delta,verbose);
+  if (verbose)
+    fprintf('pre-time: %f', toc(t1));
+  end
 	% coarse-to-fine estimation
   t2 = tic;
 	[bestConfig,ex_mat,delta,sampledError] = C2Festimate(marker,img,in_mat,bounds,steps,dim,epsilon,delta,photometricInvariance,verbose);
-	fprintf('post-time: %f', toc(t2));
-	return
+	if (verbose)
+    fprintf('post-time: %f', toc(t2));
+	end
+  return
 end
