@@ -34,8 +34,9 @@
 *.user
 
 # Common data/binary directories
-imgs
-video
-nframes
-outputs
-poses
+1_video
+2_nFrames
+3_index
+4_poses
+5_markers
+7_result

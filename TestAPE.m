@@ -19,7 +19,7 @@ focal_length = 3067.45 / 4;
 in_mat = [focal_length,0,Iw/2+0.5,0;0,focal_length,Ih/2+0.5,0;0,0,1,0;0,0,0,1];
 
 if compile
-  cd '6_algorithms/APEmatlab';
+  cd '6_algorithms/DPE';
   CompileMex;
   cd '../..';
 end
@@ -44,9 +44,10 @@ for ci = 1:6 % fm latter
       idx = importdata(['3_index/' str '.txt']);
       txt = fopen(['7_result/APEmatlab/' str '.txt'], 'w');
       for i = idx
+        fprintf('  %d frame\n', i);
         img = im2double(read(video_obj, i));
-        cd '6_algorithms/APEmatlab';
-        ex_mat = TestImage_APE(marker, img, in_mat, 0.25 * (3300/12350), 0.2, 0.8, 0.20, 1, 0, 1);
+        cd '6_algorithms/DPE';
+        ex_mat = TestImage_APE(marker, img, in_mat, 0.25 * (3300/12350), 0.2, 0.8, 0.20, 1, 0, 0);
         cd '../..';
         fprintf(txt,'%f %f %f %f %f %f %f %f %f %f %f %f\n', ex_mat(:).');
       end
