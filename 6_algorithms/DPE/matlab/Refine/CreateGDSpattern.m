@@ -1,5 +1,5 @@
 function poses = CreateGDSpattern(inipose, steps, bounds, marker_w, marker_h);
-
+  
   weight = inipose(3) + norm([marker_w, marker_h])*sin(inipose(4));
   tx_steps = zeros(1,13) + inipose(1);
   tx_steps(2) = tx_steps(2) + steps.tx*weight;

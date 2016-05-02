@@ -1,4 +1,4 @@
-function [bestConfig,ex_mat,delta,sampledError] = APE(marker,img,in_mat,minDim,... % mandatory
+function [ex_mat,delta] = APE(marker,img,in_mat,minDim,... % mandatory
    photometricInvariance,minTz,maxTz,delta,verbose,epsilon) %optional                                                                        
 	
 	% set default values for optional variables
@@ -40,7 +40,7 @@ function [bestConfig,ex_mat,delta,sampledError] = APE(marker,img,in_mat,minDim,.
   
 	% coarse-to-fine estimation
   t2 = tic;
-	[bestConfig,ex_mat,delta,sampledError] = C2Festimate(marker,img,in_mat,bounds,steps,dim,epsilon,delta,photometricInvariance,verbose);
+	[ex_mat, delta,~] = C2Festimate(marker,img,in_mat,bounds,steps,dim,epsilon,delta,photometricInvariance,verbose);
 	if (verbose)
     fprintf('\npost-time: %f\n', toc(t2));
   end

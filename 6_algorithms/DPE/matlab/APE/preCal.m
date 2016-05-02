@@ -1,8 +1,8 @@
-function [marker, img, bounds, steps, dim] = preCal(in_mat, marker, img, minDim, minTz, maxTz, delta, verbose)
+function [marker, img, bounds, steps, dim] = preCal(in_mat, M, I, minDim, minTz, maxTz, delta, verbose)
   
   % dimensions of images
-	[hm, wm, ~] = size(marker);
-	[hi, wi, ~] = size(img);
+	[hm, wm, ~] = size(M);
+	[hi, wi, ~] = size(I);
 	dim.marker.w = wm;
 	dim.marker.h = hm;
 	dim.img.w = wi;
@@ -37,14 +37,14 @@ function [marker, img, bounds, steps, dim] = preCal(in_mat, marker, img, minDim,
 	steps.rz1 = delta*sqrt(2);
   
 	% smooth images
-	blur_sigma = calSigmaValue(rgb2gray(marker), Sxf, Syf, dim, minTz*maxTz);
+	blur_sigma = calSigmaValue(rgb2gray(M), Sxf, Syf, dim, minTz*maxTz);
   if (verbose)
     fprintf('blur sigma : %d\n', blur_sigma);
   end
 	blur_size = 4 * blur_sigma + 1;
 	params.blur_kernel  = fspecial('gaussian', blur_size, blur_sigma);
-	marker = imfilter(marker,params.blur_kernel,'symmetric');
-	img = imfilter(img,params.blur_kernel,'symmetric');
+	marker = imfilter(M,params.blur_kernel,'symmetric');
+	img = imfilter(I,params.blur_kernel,'symmetric');
 
 	% rgb to ycbcr
 	marker = rgb2ycbcrNorm(marker);

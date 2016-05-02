@@ -12,6 +12,6 @@ function ex_mat = TestImage(Marker, img, in_mat, minDim, minTz, maxTz, delta, ph
 		CompileMex;
 	end
   
-  [~,ex_mat,~,~] = DPE(Marker,img,in_mat,minDim,photometricInvariance,minTz,maxTz,delta,method,verbose);
+  [ex_mat, ex_mats] = DPE(Marker,img,in_mat,minDim,photometricInvariance,minTz,maxTz,delta,method,verbose);
 end
 

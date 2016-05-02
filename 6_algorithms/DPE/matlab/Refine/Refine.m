@@ -15,7 +15,7 @@ function [ex_mat ex_mats] = Refine(marker, img, in_mat, ex_mat, minDim, delta, b
     ex_mat = ex_mats(:, :, 1);
   else
     if (verbose)
-      fprinft('switch to the second pose!\n');
+      fprintf('switch to the second pose!\n');
     end
     ex_mat = ex_mats(:, :, 2);
   end

@@ -1,18 +1,17 @@
-function expandedConfigs = ExpandConfigsRandom(configs,steps,level,npoints,deltaFact,bounds,marker_w,marker_h)
+function [expandedConfigs, steps] = ExpandConfigsRandom(configs,steps,npoints,deltaFact,bounds,marker_w,marker_h)
 
-  fact = deltaFact^level;
-  halfstep_tx = steps.tx/fact;
-  halfstep_ty = steps.ty/fact;
-  halfstep_tz = steps.tz/fact;
-  halfstep_rx = steps.rx/fact;
-  halfstep_rz0 = steps.rz0/fact;
-  halfstep_rz1 = steps.rz1/fact;
+  steps.tx = steps.tx/deltaFact;
+  steps.ty = steps.ty/deltaFact;
+  steps.tz = steps.tz/deltaFact;
+  steps.rx = steps.rx/deltaFact;
+  steps.rz0 = steps.rz0/deltaFact;
+  steps.rz1 = steps.rz1/deltaFact;
   
   numConfigs = size(configs,1);
   
   randvec = floor(3*rand(npoints*numConfigs,6)-1); % random vectors in {-1,0,1}^6
   expanded= repmat(configs,[npoints,1]);
-  ranges = [halfstep_tx,halfstep_ty,halfstep_tz,halfstep_rx,halfstep_rz0,halfstep_rz1];
+  ranges = [steps.tx,steps.ty,steps.tz,steps.rx,steps.rz0,steps.rz1];
   addvec = repmat(ranges,[npoints*numConfigs,1]);
   
   addvec(:,3) = (randvec(:,3) >= 0) .* addvec(:,3).*(expanded(:,3).^2) ./ (1 - abs(addvec(:,3)).*expanded(:,3))...

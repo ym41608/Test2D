@@ -30,7 +30,7 @@ if compile
   compile_matcher;
 end
 
-for ci = 1:7
+for ci = 7
   if ci < 5
     si = 1:5;
   else
@@ -44,17 +44,18 @@ for ci = 1:7
       else
         str = [m(mi, :) '_' c(ci, :)];
       end
-      fprintf([str '\n']);
-      markerkeyFileName = ['5_markers/' m(mi, :) '.key'];
+      %markerkeyFileName = ['5_markers/' m(mi, :) '.key'];
+      marker = rgb2gray(im2double(imread(['5_markers/' m(mi, :) '.png'])));
       video_obj = VideoReader(['1_videos/' str '.mp4']);
       idx = importdata(['3_index/' str '.txt']);
-      for i = idx
-        imwrite(rgb2gray(im2double(read(video_obj, i))), '6_algorithms/ASIFT_RANSAC/tmp.png');
-        %img = rgb2gray(im2double(read(video_obj, i)));
+      for i = 1:780%idx
+        fprintf([str '  %d frame\n'], i);
+        %imwrite(rgb2gray(im2double(read(video_obj, i))), '6_algorithms/ASIFT_RANSAC/tmp.png');
+        img = rgb2gray(im2double(read(video_obj, i)));
         warning('off', 'all');
         cd '6_algorithms/ASIFT_RANSAC';
-        %[P, Q, fail] = ASIFT_RANSAC(markerkeyFileName, img, in_mat, nm_mat);
-        [P, Q, fail] = ASIFT_RANSAC(markerkeyFileName, 'tmp.png', in_mat, nm_mat);
+        [P, Q, fail] = ASIFT_RANSAC(marker, img, in_mat, nm_mat);
+        %[P, Q, fail] = ASIFT_RANSAC(markerkeyFileName, 'tmp.png', in_mat, nm_mat);
         cd '../..';
         writeCorres([P; Q], str, i);
       end

@@ -1,4 +1,4 @@
-function [bestConfig,ex_mat,newDelta,sampledError] = C2Festimate(marker, img, in_mat, bounds, steps, dim, epsilon, delta, photometricInvariance, verbose)
+function [ex_mat,newDelta,steps] = C2Festimate(marker, img, in_mat, bounds, steps, dim, epsilon, delta, photometricInvariance, verbose)
 	
 	% get random sample of pixels for computing Ea
 	numPoints = round(10/epsilon^2);
@@ -104,7 +104,7 @@ function [bestConfig,ex_mat,newDelta,sampledError] = C2Festimate(marker, img, in
 		else
 			prevDelta = newDelta;
 			newDelta = newDelta/deltaFact;
-			expandedPoses = ExpandPoses(goodPoses,steps,level,80,deltaFact,bounds,dim.marker_w,dim.marker_h);
+			[expandedPoses, steps] = ExpandPoses(goodPoses,steps,80,deltaFact,bounds,dim.marker_w,dim.marker_h);
 			poses = [goodPoses ; expandedPoses];
 		end
 		
